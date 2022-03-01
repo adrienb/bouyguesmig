@@ -11,25 +11,8 @@
     'external_dependencies': {
         'python': ['lasso'],
     },
-    # 'demo': [
-    #     'demo/provider.xml',
-    # ],
     'data': [
-        # 'security/ir.model.access.csv',
-        # 'data/provider.xml',
-        # 'data/cron_sync_saml_data.xml',
-
-        # 'views/saml_template.xml',
-        # 'views/provider.xml',
-        # 'views/res_users.xml',
-        #
-        # 'views/saml_menu.xml',
     ],
     'installable': True,
     'auto_install': False,
-    # 'assets': {
-    #     'web.assets_backend': [
-    #         'bycn_saml/static/css/style.scss',
-    #     ],
-    # }
 }
