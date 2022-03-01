@@ -15,9 +15,9 @@
     #     'demo/provider.xml',
     # ],
     'data': [
-        'security/ir.model.access.csv',
-        'data/provider.xml',
-        'data/cron_sync_saml_data.xml',
+        # 'security/ir.model.access.csv',
+        # 'data/provider.xml',
+        # 'data/cron_sync_saml_data.xml',
 
         # 'views/saml_template.xml',
         # 'views/provider.xml',
