@@ -2,7 +2,7 @@
 import re
 import logging
 import passlib
-import lasso
+# import lasso
 
 from odoo import api, fields, models, _, SUPERUSER_ID, tools
 from odoo.exceptions import ValidationError, AccessDenied
@@ -369,23 +369,23 @@ class ResUser(models.Model):
         # fields we need yet
         login = provider.sudo()._get_lasso_for_provider()
         matching_attribute = provider.matching_attribute
-
-        try:
-            login.processAuthnResponseMsg(token)
-        except (lasso.DsError, lasso.ProfileCannotVerifySignatureError) as e:
-            _logger.exception(e)
-            raise AccessDenied(_('Lasso Profile cannot verify signature'))
-        except lasso.ProfileStatusNotSuccessError as e:
-            _logger.exception(e)
-            raise AccessDenied(_('Profile Status failure'))
-
-        try:
-            login.acceptSso()
-        except lasso.Error as e:
-            _logger.exception(e)
-            raise AccessDenied(
-                'Invalid assertion : %s' % lasso.strError(e[0])
-            )
+        #
+        # try:
+        #     login.processAuthnResponseMsg(token)
+        # except (lasso.DsError, lasso.ProfileCannotVerifySignatureError) as e:
+        #     _logger.exception(e)
+        #     raise AccessDenied(_('Lasso Profile cannot verify signature'))
+        # except lasso.ProfileStatusNotSuccessError as e:
+        #     _logger.exception(e)
+        #     raise AccessDenied(_('Profile Status failure'))
+        #
+        # try:
+        #     login.acceptSso()
+        # except lasso.Error as e:
+        #     _logger.exception(e)
+        #     raise AccessDenied(
+        #         'Invalid assertion : %s' % lasso.strError(e[0])
+        #     )
 
         attrs = {}
         for att_statement in login.assertion.attributeStatement:

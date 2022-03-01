@@ -8,9 +8,9 @@
     'depends': [
         'web_enterprise'
     ],
-    'external_dependencies': {
-        'python': ['lasso'],
-    },
+    # 'external_dependencies': {
+    #     'python': ['lasso'],
+    # },
     'demo': [
         'demo/provider.xml',
     ],
