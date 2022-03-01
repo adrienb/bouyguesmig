@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<templates id="template" xml:space="preserve">
-<t t-name="bouygues.SwitchCompanyMenu">
-    <t t-if="widget.view_company_switch_button">
-        <t t-call="SwitchCompanyMenu"/>
-    </t>
-</t>
-</templates>

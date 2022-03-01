@@ -151,11 +151,6 @@
     'demo': [],
     'pre_init_hook': 'pre_init_hook',
     'qweb': [
-        # 'static/src/xml/product_product_tree.xml',
-        # 'static/src/xml/qty_at_date_widget.xml',
-        # 'static/src/xml/productsSearchBar_autocomplete.xml',
-        # 'static/src/xml/switch_company_menu.xml',
-        # 'static/src/xml/board.xml',
     ],
     'auto_install': False,
 }
