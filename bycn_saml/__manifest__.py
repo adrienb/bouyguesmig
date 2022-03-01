@@ -1,6 +1,6 @@
 {
     'name': 'BYCN Saml2 Authentication',
-    'version': '12.0.1',
+    'version': '15.0.0',
     'summary': 'A library inspired by auth_saml OCA module for dealing with SAML & Single Sign-On',
     'author': 'BYCN IT, Bouygues-Construction Information Technologies',
     'category': 'Utils',
