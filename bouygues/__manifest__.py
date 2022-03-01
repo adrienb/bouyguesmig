@@ -155,7 +155,6 @@
         # 'static/src/xml/qty_at_date_widget.xml',
         # 'static/src/xml/productsSearchBar_autocomplete.xml',
         # 'static/src/xml/switch_company_menu.xml',
-        # 'static/src/xml/website_sale_stock_product_availability.xml',
         # 'static/src/xml/board.xml',
     ],
     'auto_install': False,
