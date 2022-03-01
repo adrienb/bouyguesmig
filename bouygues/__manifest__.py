@@ -43,9 +43,9 @@
     ],
     'data': [
         # Data
-        'data/fonctions.xml',
-        'data/security_groups.xml',
-        'data/sequence.xml',
+        # 'data/fonctions.xml',
+        # 'data/security_groups.xml',
+        # 'data/sequence.xml',
         # 'data/mail_templates.xml',
         # 'data/stock_data.xml',
         # 'data/ir_cron.xml',
@@ -58,7 +58,7 @@
         # 'security/ir_model_access.xml',
 
         # Reports
-        'reports/paper_format.xml',
+        # 'reports/paper_format.xml',
         # 'reports/delivery_slip.xml',
         # 'reports/purchase_order.xml',
         # 'reports/sale_order_report.xml',
