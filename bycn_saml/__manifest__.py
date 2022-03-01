@@ -8,9 +8,6 @@
     'depends': [
         'web_enterprise'
     ],
-    'external_dependencies': {
-        'python': ['lasso'],
-    },
     'data': [
     ],
     'installable': True,
