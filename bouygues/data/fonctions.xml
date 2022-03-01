@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <data>
-        <function model="set.values.bouygues" name="_set_xml_ids_update_false"/>
-    </data>
-</odoo>

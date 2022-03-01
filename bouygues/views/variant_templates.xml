@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<odoo>
-    <template id="variants" inherit_id="sale.variants">
-        <xpath expr="//span[hasclass('badge')]" position="replace"/>
-        <xpath expr="//div[hasclass('radio_input_value')]//span[hasclass('badge')]" position="replace"/>
-    </template>
-</odoo>
