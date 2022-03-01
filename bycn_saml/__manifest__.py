@@ -6,14 +6,14 @@
     'category': 'Utils',
     'website': 'https://bouygues-construction.com',
     'depends': [
-        'web_enterprise'
+        # 'web_enterprise'
     ],
     'external_dependencies': {
         'python': ['lasso'],
     },
 
     'data': [
-        'security/ir.model.access.csv',
+        # 'security/ir.model.access.csv',
     ],
     'installable': True,
     'auto_install': False,
