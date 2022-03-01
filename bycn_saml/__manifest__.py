@@ -31,5 +31,5 @@
     #     'web.assets_backend': [
     #         'bycn_saml/static/css/style.scss',
     #     ],
-    }
+    # }
 }
