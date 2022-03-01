@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="bouygues_exception_purchase_on_sale_cancellation" inherit_id="sale_purchase.exception_purchase_on_sale_cancellation">
+            <xpath expr="//div" position="replace">
+                <div>
+                    <p>
+                        Exception(s) occurred on the sale order(s):
+                        <t t-foreach="sale_orders" t-as="sale_order">
+                            <a href="#" data-oe-model="sale.order" t-att-data-oe-id="sale_order.id"><t t-esc="sale_order.name"/></a>
+                        </t>.
+                        Manual actions may be needed.
+                    </p>
+                    <div class="mt16">
+                        <p>Exception(s):</p>
+                        <ul t-foreach="sale_order_lines" t-as="sale_line">
+                            <li>
+                                <a href="#" data-oe-model="sale.order" t-att-data-oe-id="sale_line.order_id.id"><t t-esc="sale_line.order_id.name"/></a>: <t t-esc="sale_line.product_uom_qty"/> <t t-esc="sale_line.product_uom.name"/> of <t t-esc="sale_line.product_id.display_name"/> cancelled
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+        <template id="bouygues_exception_purchase_on_sale_quantity_decreased" inherit_id="sale_purchase.exception_purchase_on_sale_quantity_decreased">
+            <xpath expr="//div" position="replace">
+                <div>
+                    <p>
+                        Exception(s) occurred on the sale order(s):
+                        <t t-foreach="sale_orders" t-as="sale_order">
+                            <a href="#" data-oe-model="sale.order" t-att-data-oe-id="sale_order.id"><t t-esc="sale_order.name"/></a>.
+                        </t>
+                        Manual actions may be needed.
+                    </p>
+                    <div class="mt16">
+                        <p>Exception(s):</p>
+                        <ul t-foreach="sale_lines" t-as="sale_line">
+                            <li>
+                                <t t-set="new_qty" t-value="sale_line.product_uom_qty"/>
+                                <t t-set="old_qty" t-value="origin_values.get(sale_line.id, 0.0)"/>
+
+                                <a href="#" data-oe-model="sale.order" t-att-data-oe-id="sale_line.order_id.id"><t t-esc="sale_line.order_id.name"/></a>:
+                                <t t-esc="new_qty"/> <t t-esc="sale_line.product_uom.name"/> of <t t-esc="sale_line.product_id.display_name"/> ordered instead of <t t-esc="old_qty"/> <t t-esc="sale_line.product_uom.name"/>
+                              </li>
+                        </ul>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+        <template id="bouygues_exception_sale_on_purchase_cancellation" inherit_id="sale_purchase.exception_sale_on_purchase_cancellation">
+            <xpath expr="//div" position="replace">
+                <div>
+                    <p>
+                        Exception(s) occurred on the purchase order(s):
+                        <t t-foreach="purchase_orders" t-as="purchase_order">
+                            <a href="#" data-oe-model="purchase.order" t-att-data-oe-id="purchase_order.id"><t t-esc="purchase_order.name"/></a>
+                        </t>.
+                        Manual actions may be needed.
+                    </p>
+                    <div class="mt16">
+                        <p>Exception(s):</p>
+                        <ul t-foreach="purchase_order_lines" t-as="purchase_line">
+                            <li>
+                                <a href="#" data-oe-model="purchase.order" t-att-data-oe-id="purchase_line.order_id.id"><t t-esc="purchase_line.order_id.name"/></a>: <t t-esc="purchase_line.product_qty"/> <t t-esc="purchase_line.product_uom.name"/> of <t t-esc="purchase_line.product_id.display_name"/> cancelled
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+        <template id="bouygues_exception_on_po" inherit_id="purchase_stock.exception_on_po">
+            <xpath expr="//div" position="replace">
+                <div>
+                  Exception(s) occurred on the purchase order(s):
+                  <t t-foreach="purchase_order_ids" t-as="purchase_order">
+                      <a href="#" data-oe-model="purchase.order" t-att-data-oe-id="purchase_order.id"><t t-esc="purchase_order.name"/></a>.
+                  </t>
+                  Manual actions may be needed.
+                  <div class="mt16">
+                      <p>Exception(s):</p>
+                      <ul t-foreach="order_exceptions" t-as="exception">
+                          <li>
+                              <t t-set="order_line" t-value="exception[0]"/>
+                              <t t-set="new_qty" t-value="exception[1][0]"/>
+                              <t t-set="old_qty" t-value="exception[1][1]"/>
+                              <t t-esc="new_qty"/> <t t-esc="order_line.product_uom.name"/> of <t t-esc="order_line.product_id.display_name"/>
+                              ordered instead of <t t-esc="old_qty"/> <t t-esc="order_line.product_uom.name"/>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="mt16" t-if="impacted_pickings">
+                      <p>Next transfer(s) impacted:</p>
+                      <ul t-foreach="impacted_pickings" t-as="picking">
+                          <li><a href="#" data-oe-model="stock.picking" t-att-data-oe-id="picking.id"><t t-esc="picking.name"/></a></li>
+                      </ul>
+                  </div>
+                </div>
+            </xpath>
+        </template>
+        <template id="bouygues_exception_on_mo" inherit_id="mrp.exception_on_mo">
+            <xpath expr="//div" position="replace">
+                <div class="alert alert-warning" role="alert">
+                    Exception(s) occurred on the manufacturing order(s):
+                    <a href="#" data-oe-model="mrp.production" t-att-data-oe-id="production_order.id"><t t-esc="production_order.name"/></a>.
+                    Manual actions may be needed.
+                    <div class="mt16">
+                        <p>Exception(s):</p>
+                        <ul t-foreach="order_exceptions.items()" t-as="order_exception">
+                            <li>
+                                <t t-set="move_raw_id" t-value="order_exception[0]"/>
+                                <t t-set="exception" t-value="order_exception[1]"/>
+                                <t t-set="order" t-value="exception[0]"/>
+                                <t t-set="new_qty" t-value="exception[1][0]"/>
+                                <t t-set="old_qty" t-value="exception[1][1]"/>
+                                    <a href="#" data-oe-model="mrp.production" t-att-data-oe-id="production_order.id"><t t-esc="production_order.name"/></a>:
+                                    <t t-esc="new_qty"/> <t t-esc="move_raw_id.product_uom.name"/> of <t t-esc="move_raw_id.product_id.display_name"/>
+                                    <t t-if="cancel">
+                                        cancelled
+                                    </t>
+                                    <t t-if="not cancel">
+                                        ordered instead of <t t-esc="old_qty"/> <t t-esc="move_raw_id.product_uom.name"/>
+                                    </t>
+                              </li>
+                        </ul>
+                    </div>
+                    <div class="mt16" t-if="not cancel and impacted_pickings">
+                        <p>Impacted Transfer(s):</p>
+                        <ul t-foreach="impacted_pickings" t-as="picking">
+                            <li><a href="#" data-oe-model="stock.picking" t-att-data-oe-id="picking.id"><t t-esc="picking.name"/></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+        <template id="bouygues_exception_on_so" inherit_id="sale_stock.exception_on_so">
+            <xpath expr="//div" position="replace">
+                <div>
+                    Exception(s) occurred on the sale order(s):
+                    <t t-foreach="sale_order_ids" t-as="sale_order">
+                        <a href="#" data-oe-model="sale.order" t-att-data-oe-id="sale_order.id"><t t-esc="sale_order.name"/></a>.
+                    </t>
+                    Manual actions may be needed.
+                    <div class="mt16">
+                        <p>Exception(s):</p>
+                        <ul t-foreach="order_exceptions" t-as="exception">
+                            <li>
+                                <t t-set="order_line" t-value="exception[0]"/>
+                                <t t-set="new_qty" t-value="exception[1][0]"/>
+                                <t t-set="old_qty" t-value="exception[1][1]"/>
+                                    <a href="#" data-oe-model="sale.order" t-att-data-oe-id="order_line.order_id.id"><t t-esc="order_line.order_id.name"/></a>:
+                                    <t t-esc="new_qty"/> <t t-esc="order_line.product_uom.name"/> of <t t-esc="order_line.product_id.display_name"/>
+                                    <t t-if="cancel">
+                                        cancelled
+                                    </t>
+                                    <t t-if="not cancel">
+                                        ordered instead of <t t-esc="old_qty"/> <t t-esc="order_line.product_uom.name"/>
+                                    </t>
+                              </li>
+                        </ul>
+                    </div>
+                    <div class="mt16" t-if="not cancel and impacted_pickings">
+                        <p>Impacted Transfer(s):</p>
+                        <ul t-foreach="impacted_pickings" t-as="picking">
+                            <li><a href="#" data-oe-model="stock.picking" t-att-data-oe-id="picking.id"><t t-esc="picking.name"/></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="bouygues_rental_wizard_form_view" model="ir.ui.view">
+            <field name="name">bouygues.rental.wizard.from</field>
+            <field name="model">rental.wizard</field>
+            <field name="inherit_id" ref="sale_renting.rental_configurator_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='duration']" position="after">
+                    <field name="rental_price" invisible="1"/>
+                    <field name="rental_unit" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

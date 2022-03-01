@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<template id="bouygues_sale_order_portal_content" inherit_id="sale.sale_order_portal_content">
+		<xpath expr="//section[@id='details']//tbody[hasclass('sale_tbody')]//td" position="after">
+			<td t-if="sale_order.is_rental_order" class="text-right">
+				<span t-field="line.duration"/>(<span t-field="line.rental_unit"/>)
+			</td>
+			<td t-if="sale_order.is_rental_order" class="text-right">
+				<span t-field="line.rental_price"/>
+			</td>
+		</xpath>
+        <xpath expr="//section[@id='details']/table/thead/tr/th" position="after">
+			<th t-if="sale_order.is_rental_order" class="text-right">
+				<span>Duration</span>
+			</th>
+			<th t-if="sale_order.is_rental_order" class="text-right">
+				<span>Unit Price (rental)</span>
+			</th>
+		</xpath>
+	</template>
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="purchase_family_tree_view" model="ir.ui.view">
+            <field name="name">purchase.family.tree</field>
+            <field name="model">purchase.family</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="purchase_family_form_view" model="ir.ui.view">
+            <field name="name">purchase.family.form</field>
+            <field name="model">purchase.family</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="description"/>
+                            <field name="parent_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_purchase_family" model="ir.actions.act_window">
+            <field name="name">Purchase Family</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.family</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="bouygues.purchase_family_tree_view"/>
+        </record>
+
+        <menuitem action="action_purchase_family" id="menu_action_purchase_family" parent="purchase.menu_purchase_config" sequence="23"/>
+</odoo>

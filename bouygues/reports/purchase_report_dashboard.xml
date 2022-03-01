@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="purchase_report_dashboard_view_pivot" model="ir.ui.view">
+            <field name="name">purchase.report.dashboard.pivot</field>
+            <field name="model">purchase.report.dashboard</field>
+            <field name="arch" type="xml">
+                <pivot string="Purchases Dashboard" disable_linking="True" display_quantity="true">
+                    <field name="average_delivery_time" type="measure"/>
+                    <field name="number_of_backorders" type="measure"/>
+                    <field name="number_of_late_dropships" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="purchase_report_dashboard_view_dashboard" model="ir.ui.view">
+            <field name="name">purchase.report.dashboard.view.dashboard</field>
+            <field name="model">purchase.report.dashboard</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <dashboard>
+                    <group>
+                        <group>
+                            <aggregate name="order_id_waiting" field="order_id" domain="[('po_state', '=', 'to approve')]"
+                                       string="Number of orders waiting validation / signature"/>
+                            <aggregate name="orders_fully_received" field="orders_done_id" domain="[('po_state', '=', 'done')]"
+                                       string="Orders fully received" invisible="1"/>
+                            <aggregate name="orders_all" field="orders_all_id"
+                                       string="All orders received" invisible="1"/>
+                            <formula name="percentage_orders_fully_received" string="Percentage of orders fully received"
+                                        value="record.orders_fully_received / record.orders_all" widget="percentage"/>
+                        </group>
+                    </group>
+                    <view type="pivot" ref="bouygues.purchase_report_dashboard_view_pivot"/>
+                </dashboard>
+            </field>
+        </record>
+
+        <record id="view_purchase_dashboard_search" model="ir.ui.view">
+            <field name="name">report.purchase.dashboard.search</field>
+            <field name="model">purchase.report.dashboard</field>
+            <field name="arch" type="xml">
+                <search string="Purchase Orders">
+                    <filter string="Requests for Quotation" name="quotes" domain="[('state','in',('draft','sent'))]"/>
+                    <filter string="Purchase Orders" name="orders" domain="[('state','!=','draft'), ('state','!=','sent'), ('state','!=','cancel')]"/>
+                    <field name="partner_id"/>
+                    <group expand="0" string="Extended Filters">
+                        <field name="user_id"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="date_order"/>
+                        <field name="date_approve"/>
+                    </group>
+                    <group expand="1" string="Group By">
+                        <filter string="Vendor" name="group_partner_id" context="{'group_by':'partner_id'}"/>
+                        <filter string="Vendor Country" name="country_id" context="{'group_by':'country_id'}"/>
+                        <filter string="Purchase Representative" name="user_id" context="{'group_by':'user_id'}"/>
+                        <filter string="Status" name="status" context="{'group_by':'state'}"/>
+                        <filter string="Company" name="company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+                        <separator/>
+                        <filter string="Order Date" name="order_month" context="{'group_by': 'date_order:month'}"/>
+                        <filter string="Confirmation Date" name="group_date_approve_month" context="{'group_by': 'date_approve:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="purchase_report_dashboard_action_dashboard" model="ir.actions.act_window">
+            <field name="name">Purchase Analysis Dashboard</field>
+            <field name="res_model">purchase.report.dashboard</field>
+            <field name="view_mode">dashboard</field>
+            <field name="search_view_id" ref="bouygues.view_purchase_dashboard_search"/>
+            <field name="domain">[('company_id', '=', 2)]</field>
+            <field name="context" eval="{}"/>
+        </record>
+
+        <menuitem action="purchase_report_dashboard_action_dashboard"
+                  id="menu_purchase_report_dashboard_action_dashboard" parent="purchase.purchase_report" sequence="20"/>
+
+    </data>
+</odoo>

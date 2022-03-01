@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product" inherit_id='website_sale.product' name="Product" priority="25">
+        <xpath expr="//div[@id='product_option_block']" position="before">
+            <t t-if="product.product_variant_id.product_sale_line_warn_msg">
+                <div>
+                    <p t-esc="product.product_variant_id.product_sale_line_warn_msg"/>
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//div[@id='product_option_block']" position="after">
+            <div style="display: inline-block;">
+                <t t-if="product.we_love_life">
+                    <div>
+                        <img src="/bouygues/static/src/img/We love life.png" class="img-fluid o_we_custom_image" style="width:20%;height:20%;float:left;"/>
+                    </div>
+                </t>
+                <t t-if="product.distrimo_plus">
+                    <div>
+                        <img src="/bouygues/static/src/img/Distriplus.png" class="img-fluid o_we_custom_image" style="width:20%;height:20%;float:left;"/>
+                    </div>
+                </t>
+                <t t-if="product.made_in_france">
+                    <div>
+                        <img src="/bouygues/static/src/img/Made in france.png" class="img-fluid o_we_custom_image" style="width:20%;height:20%;float:left;"/>
+                    </div>
+                </t>
+                <t t-if="product.sur_commande">
+                    <div>
+                        <img src="/bouygues/static/src/img/surcommande.png" class="img-fluid o_we_custom_image" style="width:20%;height:20%;float:left;"/>
+                    </div>
+                </t>
+<!--                <t t-if="product.categ_id.is_brand">-->
+<!--                    <div>-->
+<!--                        <img t-att-src="image_data_uri(product.categ_id.image_brand)" class="img-fluid o_we_custom_image" style="width:20%;height:20%;float:left;"/>-->
+<!--                    </div>-->
+<!--                </t>-->
+                <t t-foreach="product.public_categ_ids" t-as="categ">
+                    <t t-if="categ.is_brand">
+                        <div>
+                            <img t-att-src="image_data_uri(categ.image_1920)" class="img-fluid o_we_custom_image" style="width:20%;height:20%;float:left;"/>
+                        </div>
+                    </t>
+                </t>
+            </div>
+            <div t-if="product.manufacturer_link">
+                <font style="font-size: 18px;"><a t-att-href="product.manufacturer_link" target="_blank" title="Lien Fabricant">Lien Fabricant</a></font><br />
+            </div>
+            <div t-if="product.review_link">
+                <font style="font-size: 18px;"><a t-att-href="product.review_link" target="_blank" title="Avis Produit">Avis Produit</a></font>
+            </div>
+            <div t-if="product.security_data_file">
+                <a t-attf-href="/web/content/product.template/{{product.id}}/security_data_file" title="Security Data file.pdf"  target="_blank">
+                    <font style="font-size: 18px;">Security Data file</font>
+                    <a t-attf-href="/web/content/product.template/{{product.id}}/security_data_file" class="o_image" title="Security Data file.pdf"  target="_blank" data-mimetype="application/pdf" style="width:25px;height:25px;"></a>
+                </a>
+            </div>
+            <div t-if="product.technical_file">
+                <a t-attf-href="/web/content/product.template/{{product.id}}/technical_file" title="Security Data file.pdf"  target="_blank">
+                    <font style="font-size: 18px;">Technical file</font>
+                    <a t-attf-href="/web/content/product.template/{{product.id}}/technical_file" class="o_image" title="Technical file.pdf" target="_blank" data-mimetype="application/pdf" style="width:25px;height:25px;"></a>
+                </a>
+            </div>
+        </xpath>
+        <xpath expr="//h1" position="after">
+            <h4 t-esc="product.default_code"/>
+        </xpath>
+        <xpath expr="//a[@id='add_to_cart']" position="replace">
+            <a id="add_to_cart" style="display: none !important; visibility: hidden" href="#"></a>
+        </xpath>
+        <xpath expr="//hr[@t-if='product.description_sale']" position="replace">
+            <t t-if="product.description_website">    
+                <xpath expr="//p[@t-field='product.description_sale']" position="replace">
+                    <p t-field="product.description_website" class="text-muted mt-3" placeholder="A short description that will also appear on documents." />
+                </xpath>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="accessories_recommended_products" inherit_id="website_sale.recommended_products">
+        <!-- Hide alternatives products -->
+        <xpath expr="//div[hasclass('container')]" position="replace"/>
+        <!-- Show alternatives & accessories products -->
+        <xpath expr="//div[@id='product_full_description']" position="after">
+            <div class="container mt32 mb16">
+                <div class="row">
+                    <t t-if="product.alternative_product_ids">
+                        <div t-att-class="'col-md-12' if not product.accessory_product_ids else 'col-md-6'">
+                            <div class="container">
+                                <h3 class="text-center">Alternative Products:</h3>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id="alternatives_carousel" class="s_carousel s_carousel_default carousel slide alt_acc_carousel" data-interval="10000">
+                                            <!-- Indicators -->
+                                            <ol class="carousel-indicators">
+                                                <t t-set="is_product_first" t-value="True"/>
+                                                <t t-foreach="product.alternative_product_ids" t-as="alt_product">
+                                                    <t t-if="
+                                                        not alt_product.entity_ids or (
+                                                            env.user and env.user.partner_id and env.user.partner_id.partner_category_id.id in alt_product.entity_ids.ids
+                                                        )">
+                                                        <li data-target="#alternatives_carousel" t-attf-data-slide-to="{{alt_product_index}}" t-att-class="'active' if is_product_first else ''" t-attf-style="background-image: url('/web/image/product.template/{{alt_product.id}}/image_256')"/>
+                                                        <t t-set="is_product_first" t-value="True"/>
+                                                    </t>
+                                                </t>
+                                            </ol>
+                                            <!-- Content -->
+                                            <div class="carousel-inner">
+                                                <t t-set="is_product_first" t-value="True"/>
+                                                <t t-foreach="product.alternative_product_ids" t-as="alt_product">
+                                                    <t t-if="
+                                                        not alt_product.entity_ids or (
+                                                            env.user and env.user.partner_id and env.user.partner_id.partner_category_id.id in alt_product.entity_ids.ids
+                                                        )">
+                                                        <div t-attf-class="carousel-item pb64 oe_custom_bg oe_img_bg {{'active' if is_product_first else ''}}">
+                                                            <div class="col-12">
+                                                                <div class="mt16 text-center">
+                                                                    <div t-field="alt_product.image_256" t-options="{'widget': 'image', 'qweb_img_responsive': False, 'class': 'rounded shadow o_image_128_max' }" />
+                                                                    <h5 class="pt8">
+                                                                        <a t-att-href="alt_product.website_url">
+                                                                            <span t-att-title="alt_product.name" t-field="alt_product.name" class="o_text_overflow" />
+                                                                        </a>
+                                                                    </h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <t t-set="is_product_first" t-value="False"/>
+                                                    </t>
+                                                </t>
+                                            </div>
+                                            <!-- Controls -->
+                                            <div class="carousel-control-prev" data-target="#alternatives_carousel" data-slide="prev" role="img" aria-label="Previous" title="Previous">
+                                                <span class="carousel-control-prev-icon"/>
+                                                <span class="sr-only">Previous</span>
+                                            </div>
+                                            <div class="carousel-control-next" data-target="#alternatives_carousel" data-slide="next" role="img" aria-label="Next" title="Next">
+                                                <span class="carousel-control-next-icon"/>
+                                                <span class="sr-only">Next</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="product.accessory_product_ids">
+                        <div t-att-class="'col-md-12' if not product.alternative_product_ids else 'col-md-6'">
+                            <div class="container">
+                                <h3 class="text-center">Accessories Products:</h3>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id="accessories_carousel" class="s_carousel s_carousel_default carousel slide alt_acc_carousel" data-interval="10000">
+                                            <!-- Indicators -->
+                                            <ol class="carousel-indicators">
+                                                <t t-set="is_product_first" t-value="True"/>
+                                                <t t-foreach="product.accessory_product_ids" t-as="acc_product">
+                                                    <t t-if="
+                                                        not acc_product.entity_ids or (
+                                                            env.user and env.user.partner_id and env.user.partner_id.partner_category_id.id in acc_product.entity_ids.ids
+                                                        )">
+                                                        <li data-target="#accessories_carousel" t-attf-data-slide-to="{{acc_product_index}}" t-att-class="'active' if is_product_first else ''" t-attf-style="background-image: url('/web/image/product.product/{{acc_product.id}}/image_256')"/>
+                                                        <t t-set="is_product_first" t-value="False"/>
+                                                    </t>
+                                                </t>
+                                            </ol>
+                                            <!-- Content -->
+                                            <div class="carousel-inner">
+                                                <t t-set="is_product_first" t-value="True"/>
+                                                <t t-foreach="product.accessory_product_ids" t-as="acc_product">
+                                                    <t t-if="
+                                                        not acc_product.entity_ids or (
+                                                            env.user and env.user.partner_id and env.user.partner_id.partner_category_id.id in acc_product.entity_ids.ids
+                                                        )">
+                                                        <div t-attf-class="carousel-item pb64 oe_custom_bg oe_img_bg {{'active' if is_product_first else ''}}">
+                                                            <div class="col-12">
+                                                                <div class="mt16 text-center">
+                                                                    <div t-field="acc_product.image_256" t-options="{'widget': 'image', 'qweb_img_responsive': False, 'class': 'rounded shadow o_image_128_max' }" />
+                                                                    <h5 class="pt8">
+                                                                        <a t-att-href="acc_product.website_url">
+                                                                            <span t-att-title="acc_product.name" t-field="acc_product.name" class="o_text_overflow" />
+                                                                        </a>
+                                                                    </h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <t t-set="is_product_first" t-value="False"/>
+                                                    </t>
+                                                </t>
+                                            </div>
+                                            <!-- Controls -->
+                                            <div class="carousel-control-prev" data-target="#accessories_carousel" data-slide="prev" role="img" aria-label="Previous" title="Previous">
+                                                <span class="carousel-control-prev-icon"/>
+                                                <span class="sr-only">Previous</span>
+                                            </div>
+                                            <div class="carousel-control-next" data-target="#accessories_carousel" data-slide="next" role="img" aria-label="Next" title="Next">
+                                                <span class="carousel-control-next-icon"/>
+                                                <span class="sr-only">Next</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="products_item" inherit_id="website_sale.products_item">
+        <xpath expr="//div[hasclass('product_price')]" position="after">
+            <t t-if="user_id.show_taxes">
+                <t t-if="product.eco_tax_id">
+                    <div>
+                        <p>
+                            (+ <span t-esc="product.eco_tax_id.name"/>)
+                        </p>
+                    </div>
+                </t>
+                <t t-if="product.storage_cost_id">
+                    <div>
+                        <p>
+                            (+ <span t-esc="product.storage_cost_id.name"/>)
+                        </p>
+                    </div>
+                </t>
+            </t>
+            <div class="product_reference">
+                <span t-esc="product.default_code"/>
+            </div>
+            <div class="product_quantity">
+                <span t-esc="product.bouygues_free_qty"/>
+                <span> on hand</span>
+            </div>
+            <div class="product_alternative">
+                <a itemprop="alt" t-att-href="product_href" t-if="product.alternative_product_ids">see alternatives products</a>
+            </div>
+            <div class="product_accessories">
+                <a itemprop="alt" t-att-href="product_href" t-if="product.accessory_product_ids">see accessories products</a>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="wishlist" inherit_id='website_sale_wishlist.product_wishlist' name="Wishlist">
+        <xpath expr="//div[hasclass('checkbox')]" position="replace"/>
+    </template>
+
+    <template id="on_hand" inherit_id="website_sale.sort" name="Show On Hand">
+        <xpath expr="//div[hasclass('dropdown_sorty_by')]" position="after">
+            <t t-set="on_hand" t-value="request.params.get('on_hand', '0') == '1'"/>
+            <div class="mt-2 ml-md-2">
+                <a role="button" t-att-href="keep('/shop', on_hand='0' if on_hand else '1')" class="btn btn-secondary">
+                    <span class="d-none d-lg-inline">
+                        <t t-if="on_hand">
+                            All
+                        </t>
+                        <t t-else="">
+                            On Hand
+                        </t>
+                    </span>
+                </a>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="product_price" inherit_id="website_sale.product_price">
+        <xpath expr="//div[hasclass('product_price')]//h4" position="after">
+            <t t-if="product.eco_tax_id">
+                <div>
+                    <p>
+                        (+ <span t-esc="product.eco_tax_id.name"/>)
+                    </p>
+                </div>
+            </t>
+            <t t-if="product.storage_cost_id">
+                <div>
+                    <p>
+                        (+ <span t-esc="product.storage_cost_id.name"/>)
+                    </p>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>

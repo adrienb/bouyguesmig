@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!--        <record model="ir.ui.view" id="partner_tree_extension">-->
+<!--            <field name="name">partner_tree_extension</field>-->
+<!--            <field name="model">res.partner</field>-->
+<!--            <field name="inherit_id" ref="base.view_partner_tree"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <field name="display_name" position="after">-->
+<!--                    <field name="name"/>-->
+<!--                    <field name="customer_hierarchy_id"/>-->
+<!--                    <field name="customer_type"/>-->
+<!--                    <field name="complete_code"/>-->
+<!--                </field>-->
+<!--                <field name="display_name" position="attributes">-->
+<!--                    <attribute name="invisible">True</attribute>-->
+<!--                </field>-->
+<!--            </field>-->
+<!--        </record>-->
+        <record id="bouygues_res_partner_address_form_view" model="ir.ui.view">
+            <field name="name">bouygues.res.partner.address.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_address_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group" position="inside">
+                    <field name="type" invisible="1"/>
+                    <field name="mandatory_country" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='street']" position="attributes">
+                    <attribute name="attrs">{'required': [('type', '=', 'delivery')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='city']" position="attributes">
+                    <attribute name="attrs">{'required': [('type', '=', 'delivery')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='zip']" position="attributes">
+                    <attribute name="attrs">{'required': [('type', '=', 'delivery')]}</attribute>
+                </xpath>                <xpath expr="//field[@name='country_id']" position="attributes">
+                    <attribute name="attrs">{'required': [('type', '=', 'delivery')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='country_id']" position="attributes">
+                    <attribute name="attrs">{'required': [('mandatory_country', '=', True)]}</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_res_partner_short_form_view" model="ir.ui.view">
+            <field name="name">bouygues.res.partner.short.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_short_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='street']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', '=', 'delivery')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='city']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', '=', 'delivery')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='zip']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', '=', 'delivery')]}</attribute>
+                </xpath>                <xpath expr="//field[@name='country_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', '=', 'delivery')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='country_id']" position="before">
+                    <field name="mandatory_country" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='country_id']" position="attributes">
+                    <attribute name="attrs">{'required': [('mandatory_country', '=', True)]}</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_res_partner_form_view" model="ir.ui.view">
+            <field name="name">bouygues.res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='sales_purchases']//field[@name='user_id']" position="before">
+                    <field name="is_customer"/>
+                </xpath>
+                <xpath expr="//field[@name='country_id']" position="before">
+                    <field name="mandatory_country" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='country_id']" position="attributes">
+                    <attribute name="attrs">{'required': [('mandatory_country', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//page[@name='sales_purchases']//field[@name='property_supplier_payment_term_id']" position="before">
+                    <field name="is_supplier"/>
+                    <field name="code_supplier" attrs="{'invisible': [('is_supplier', '=', False)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='website_id']" position="before">
+                    <field name="id_v12"/>
+                    <field name="delivery_date_day"/>
+                </xpath>
+                <xpath expr="//field[@name='property_supplier_payment_term_id']" position="before">
+                    <field name="product_location_responsible_ids" attrs="{'invisible': [('is_supplier', '=', False)]}">
+                        <tree editable="bottom">
+                            <field name="responsible_id"/>
+                            <field name="warehouse_id"/>
+                        </tree>
+                    </field>
+                    <field name="dropship_responsible_id" attrs="{'invisible': [('is_supplier', '=', False)]}"/>
+                </xpath>
+                <xpath expr="//page[@name='sales_purchases']//field[@name='ref']" position="before">
+                    <field name="is_user"/>
+                </xpath>
+                <xpath expr="//field[@name='function']" position="after">
+                    <field name="fax"/>
+                </xpath>
+                <xpath expr="//field[@name='type']" position="attributes">
+                    <attribute name="groups"></attribute>
+                </xpath>
+                <xpath expr="//field[@name='street']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)],'required':[('type', '=', 'delivery')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='city']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)],'required':[('type', '=', 'delivery')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='zip']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)],'required':[('type', '=', 'delivery')]}</attribute>
+                </xpath>
+                <xpath expr="//page[1]//form//field[@name='street']" position="attributes">
+                    <attribute name="attrs">{'required':[('type', '=', 'delivery')]}</attribute>
+                </xpath>
+                <xpath expr="//page[1]//form//field[@name='city']" position="attributes">
+                    <attribute name="attrs">{'required':[('type', '=', 'delivery')]}</attribute>
+                </xpath>
+                <xpath expr="//page[1]//form//field[@name='zip']" position="attributes">
+                    <attribute name="attrs">{'required':[('type', '=', 'delivery')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='child_ids']//form//field[@name='country_id']" position="before">
+                    <field name="mandatory_country" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='child_ids']//form//field[@name='country_id']" position="attributes">
+                    <attribute name="attrs">{'required':[('mandatory_country', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//page[@name='internal_notes']" position="after">
+                    <page name="sale_order_note" string="Sale Order Note">
+                        <group>
+                            <field name="so_note"/>
+                        </group>
+                    </page>
+                    <page name="portal_access" string="Portal Access">
+                        <group>
+                            <field name="portal_access_to_give"/>
+                            <field name="portal_access_given"/>
+                            <field name="partner_category_id"/>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='vat']" position="after">
+<!--                    <field name="customer_type" attrs="{'required': [('is_company', '=', True), ('is_customer', '=', True)], 'invisible': ['|', ('is_company', '=', False), ('is_customer', '=', False)]}"/>-->
+<!--                    <field name="customer_hierarchy_id" attrs="{'invisible': ['|', '|', ('customer_type', '=', 'group'), ('is_company', '=', False), ('is_customer', '=', False)]}" domain="[('customer_type', 'not in', [False, 'construction_site', customer_type]), ('is_company', '=', True), ('is_customer', '=', True), ('id', '!=', active_id)]"/>-->
+<!--                    <field name="code" attrs="{'invisible': ['|', '|', ('customer_type', '=', 'construction_site'), ('is_company', '=', False ), ('is_customer', '=', False)], 'required': [('customer_type', 'not in', [False, 'construction_site'])]}"/>-->
+                    <field name="abbreviation"/>
+                    <field name="linked_partner_id" context="{'partner_show_abbreviation': True}" options="{'always_reload': True}"/>
+                </xpath>
+                <xpath expr="//field[@name='parent_id']" position="attributes">
+                    <attribute name="attrs">{'invisible':0}</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_res_partner_search_view" model="ir.ui.view">
+            <field name="name">bouygues.res.partner.search</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="ref" string="Reference" filter_domain="[('ref', 'ilike', self)]" />
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="filter_domain">['|', '|', ('display_name', 'ilike', self), ('ref', 'ilike', self), ('email', 'ilike', self)]</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.actions.server" id="action_export_partner_wms">
+            <field name="name">Export Partners (WMS)</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="binding_model_id" ref="base.model_res_partner" />
+            <field name="state">code</field>
+            <field name="code">records.export_partner_wms()</field>
+        </record>
+<!--        <record model="ir.actions.act_window" id="contacts.action_contacts">-->
+<!--            <field name="context">{'default_is_company': True}</field>-->
+<!--        </record>-->
+    </data>
+</odoo>

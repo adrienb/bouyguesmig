@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- wizard view -->
+        <record id="bouygues_purchase_order_line_edit_price_view_form" model="ir.ui.view">
+            <field name="name">Edit Price Unit</field>
+            <field name="model">purchase.order.line.edit.price</field>
+            <field name="arch" type="xml">
+                <form string="Edit Price Unit">
+                    <group>
+                        <field name="price_unit"/>
+                    </group>
+                    <footer>
+                        <button string="Apply" name="action_apply" type="object" class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

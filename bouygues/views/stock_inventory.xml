@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record id="bouygues_view_inventory_form" model="ir.ui.view">
+    <field name="name">bouygues.stock.inventory.form</field>
+    <field name="model">stock.inventory</field>
+    <field name="inherit_id" ref="stock.view_inventory_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//button[@name='action_start']" position="attributes">
+            <attribute name="groups">bouygues.bouygues_logistic_extended_sales_group,bouygues.bouygues_manager_sales_group,stock.group_stock_user</attribute>
+        </xpath>
+        <xpath expr="//button[@name='action_open_inventory_lines']" position="attributes">
+            <attribute name="groups">bouygues.bouygues_logistic_extended_sales_group,bouygues.bouygues_manager_sales_group,stock.group_stock_user</attribute>
+        </xpath>
+        <xpath expr="//button[@name='action_validate'][1]" position="attributes">
+            <attribute name="groups">bouygues.bouygues_logistic_extended_sales_group,bouygues.bouygues_manager_sales_group,stock.group_stock_manager</attribute>
+        </xpath>
+    </field>
+</record>
+</odoo>

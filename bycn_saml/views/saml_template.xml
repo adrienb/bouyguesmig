@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!-- login form button -->
+    <template id="providerss" name="Auth SAML Providers">
+        <button type="button" t-foreach="providerss" t-as="p" t-att-class="p['button_css_class']" style="background-color:#f66622;">
+            <a t-att-href="'/auth_saml/get_auth_request?pid=%s'%p['id']" t-att-class="p['link_css_class']">
+                <t t-raw="p['name']" />
+            </a>
+        </button>
+    </template>
+
+    <template id="login" inherit_id="web.login" name="Samlv2 Login buttons">
+        <xpath expr="//button[@type='submit']" position="before">
+            <t t-call="bycn_saml.providerss" />
+        </xpath>
+    </template>
+
+</odoo>

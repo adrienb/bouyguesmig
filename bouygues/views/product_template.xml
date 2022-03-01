@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="bouygues_product_template_tree_view" model="ir.ui.view">
+            <field name="name">bouygues.product.template.tree</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='virtual_available']" position="after">
+                    <field name="bouygues_free_qty"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_product_template_form_view" model="ir.ui.view">
+            <field name="name">bouygues.product.template.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="duplicate">0</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_product_tmpl_forecast_report']" position="after">
+                    <button class="oe_stat_button" name="%(mrp.template_open_bom)d" type="action"
+                        attrs="{'invisible':['|', ('type', 'not in', ['product', 'consu']), ('bom_count_visible', '=', False)]}" icon="fa-flask">
+                        <field string="Bill of Materials" name="bom_count" widget="statinfo" />
+                    </button>
+                </xpath>
+                <xpath expr="//button[@name='action_product_tmpl_forecast_report']" position="after">
+                    <button type="object" string="Product moves" name="action_view_ready_stock_move" class="oe_stat_button" icon="fa-exchange">
+                    </button>
+                </xpath>
+                <xpath expr="//button[@name='action_update_quantity_on_hand']" position="after">
+                    <button name="update_name" string="Update Name" type="object"/>
+                </xpath>
+                <xpath expr="//button[@name='action_view_stock_move_lines']" position="attributes">
+                    <attribute name="groups">stock.group_stock_user,bouygues.bouygues_base_group</attribute>
+                </xpath>
+                <xpath expr="//field[@name='responsible_id']" position="after">
+                    <field name="is_dangerous"/>
+                    <field name="bom_count_visible" invisible="1"/>
+                    <field name="native_country_id"/>
+                    <field name="customs_code"/>
+                    <field name="ICPE_code"/>
+                </xpath>
+                <xpath expr="//field[@name='responsible_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='barcode']" position="after">
+                    <field name="substitution_product_id"/>
+                    <field name="eco_tax_id" domain="[('eco_tax','=',True)]"/>
+                    <field name="storage_cost_id" domain="[('storage_cost','=',True)]"/>
+                    <field name="can_edit_price"/>
+                </xpath>
+                <xpath expr="//field[@name='website_style_ids']" position="after">
+                    <field name="we_love_life"/>
+                    <field name="distrimo_plus"/>
+                    <field name="made_in_france"/>
+                    <field name="sur_commande"/>
+                    <field name="entity_ids"/>
+                    <field name="manufacturer_link" widget="url"/>
+                    <field name="review_link" widget="url"/>
+                    <field name="security_data_file"/>
+                    <field name="technical_file"/>
+                </xpath>
+                <xpath expr="//group[@name='description']" position="after">
+                    <group string="Website Description" name="description_website" invisible="0" modifiers="{}">
+					<field name="description_website" nolabel="1" placeholder="This description is visible on the product page on the website." modifiers="{}"/>
+				    </group>
+                </xpath>
+                <xpath expr="//page[@name='purchase']/group[2]" position="after">
+                    <group>
+                        <field name="purchase_family_id" label="Purchase Family"/>
+                    </group>
+                </xpath>
+                <xpath expr="//button[@name='action_open_quants']" position="before">
+                    <button type="object"
+                       name="action_view_bouygues_free_qty"
+                       class="oe_stat_button"
+                       icon="fa-shopping-cart">
+                       <field name="bouygues_free_qty" widget="statinfo" string="Available"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_product_template_form_base_view" model="ir.ui.view">
+            <field name="name">bouygues.product.template.form.base</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="duplicate">0</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_product_template_search_view" model="ir.ui.view">
+            <field name="name">bouygues.product.template.search</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.product_template_search_form_view_stock"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='warehouse_id']" position="after">
+                    <field name="seller_ids" string="Supplier Product Code" filter_domain="[('seller_ids.product_code', 'ilike', self)]" />
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_product_template_search_view_sale" model="ir.ui.view">
+            <field name="name">bouygues.product.template.search.sale</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="seller_ids" string="Supplier Product Code" filter_domain="[('seller_ids.product_code', 'ilike', self)]" />
+                </xpath>
+                <xpath expr="//field[@name='pricelist_id']" position="after">
+                    <field name="warehouse_id" context="{'warehouse': self}" filter_domain="[]"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="product_template_view_form_inherit_stock" model="ir.ui.view">
+            <field name="name">bouygues.product.template.view.form.inherit.stock</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="sale_stock.product_template_view_form_inherit_stock"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_sales']" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_salesman,bouygues.bouygues_base_group</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_view_template_property_form" model="ir.ui.view">
+            <field name="name">bouygues.product.template.stock.property.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock_account.view_template_property_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//span[@name='update_cost_price']" position="attributes">
+                    <attribute name="groups">
+                        base.group_system,
+                        account.group_account_manager,
+                        mrp.group_mrp_manager,
+                        purchase.group_purchase_manager,
+                        sales_team.group_sale_manager,
+                        stock.group_stock_manager,
+                        bouygues.bouygues_supplier_extended_sales_group,
+                        bouygues.bouygues_trade_extended_sales_group,
+                        bouygues.bouygues_manager_sales_group
+                    </attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_template_property_form" model="ir.ui.view">
+            <field name="name">bouygues.product.product.product.view.form.easy.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="stock_account.product_variant_easy_edit_view_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='update_cost_price']//button" position="attributes">
+                    <attribute name="groups">
+                        base.group_system,
+                        account.group_account_manager,
+                        mrp.group_mrp_manager,
+                        purchase.group_purchase_manager,
+                        sales_team.group_sale_manager,
+                        stock.group_stock_manager,
+                        bouygues.bouygues_supplier_extended_sales_group,
+                        bouygues.bouygues_trade_extended_sales_group,
+                        bouygues.bouygues_manager_sales_group
+                    </attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_product_template_form_view_sale_order_button" model="ir.ui.view">
+            <field name="name">bouygues.product.template.form.view.sale.order.button</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="sale.product_template_form_view_sale_order_button"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_sales']" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_salesman,bouygues.bouygues_base_group</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="stock.product_template_form_view_procurement_button" model="ir.ui.view">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('stock.group_stock_user'),
+                ref('bouygues.bouygues_base_group'),
+            ])]"/>
+        </record>
+        <record id="sale.product_template_form_view_sale_order_button" model="ir.ui.view">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('sales_team.group_sale_salesman'),
+                ref('bouygues.bouygues_base_group'),
+            ])]"/>
+        </record>
+        <record id="mrp.product_template_form_view_bom_button" model="ir.ui.view">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('mrp.group_mrp_user'),
+                ref('bouygues.bouygues_base_group'),
+            ])]"/>
+        </record>
+        <record id="purchase.view_product_template_purchase_buttons_from" model="ir.ui.view">
+            <field name="groups_id" eval="[
+                (4, ref('bouygues.bouygues_supplier_sales_group')),
+                (4, ref('bouygues.bouygues_manager_sales_group')),
+            ]"/>
+        </record>
+    </data>
+</odoo>

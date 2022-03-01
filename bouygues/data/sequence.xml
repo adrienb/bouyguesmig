@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_product_reference" model="ir.sequence">
+            <field name="name">Product Sequence Category</field>
+            <field name="code">product.sequence.category</field>
+            <field name="padding">5</field>
+            <field name="prefix">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="seq_pablo_import" model="ir.sequence">
+            <field name="name">Pablo Import Sequence</field>
+            <field name="code">pablo.import.sequence</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

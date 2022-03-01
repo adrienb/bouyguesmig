@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="package_type_type_tree_view" model="ir.ui.view">
+            <field name="name">package.type.type.tree</field>
+            <field name="model">package.type.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="package_type_type_form_view" model="ir.ui.view">
+            <field name="name">dpackage.type.type.form</field>
+            <field name="model">package.type.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_package_type_type" model="ir.actions.act_window">
+            <field name="name">Package Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">package.type.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="bouygues.package_type_type_tree_view"/>
+        </record>
+        <menuitem action="action_package_type_type" id="menu_action_package_type_type" parent="stock.menu_stock_config_settings" sequence="20"/>
+</odoo>

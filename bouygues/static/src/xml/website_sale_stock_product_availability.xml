@@ -1,0 +1,65 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<templates id="template">-->
+<!--    <t t-name="bouygues.product_availability">-->
+<!--        <t t-if="product_type == 'product'">-->
+<!--            <t t-if="free_qty gt 0">-->
+<!--                <div t-if="inventory_availability == 'always'" t-attf-class="availability_message_#{product_template} text-success mt16">-->
+<!--                    <t t-esc="free_qty" /> <t t-esc="uom_name" /> available-->
+<!--                </div>-->
+<!--                <t t-if="inventory_availability == 'threshold'">-->
+<!--                    <div t-if="free_qty lte available_threshold" t-attf-class="availability_message_#{product_template} text-warning mt16">-->
+<!--                        <i class="fa fa-exclamation-triangle" title="Warning" role="img" aria-label="Warning"/>-->
+<!--                        <t t-esc="free_qty" /> <t t-esc="uom_name" /> available-->
+<!--                    </div>-->
+<!--                    <div t-if="free_qty gt available_threshold" t-attf-class="availability_message_#{product_template} text-success mt16">In stock</div>-->
+<!--                </t>-->
+<!--            </t>-->
+<!--            <div t-if="cart_qty" t-attf-class="availability_message_#{product_template} text-warning mt8">-->
+<!--                You already added <t t-if="!free_qty">all</t> <t t-esc="cart_qty" /> <t t-esc="uom_name" /> in your cart.-->
+<!--            </div>-->
+<!--            <div t-if="!cart_qty and free_qty lte 0  and inventory_availability != 'never'" t-attf-class="availability_message_#{product_template} text-danger mt16"><i class="fa fa-exclamation-triangle" role="img" aria-label="Warning" title="Warning"/> Temporarily out of stock</div>-->
+<!--            <br/>-->
+<!--        </t>-->
+<!--        <div t-if="product_type == 'product' and inventory_availability == 'custom'" t-attf-class="availability_message_#{product_template} text-success mt16">-->
+<!--            <t t-esc="custom_message" />-->
+<!--        </div>-->
+
+<!--        <t>-->
+<!--            <t t-if="art_qtec">-->
+<!--                <div>-->
+<!--                    <p>-->
+<!--                        <label for="art_qtec" class="control-label">Qty by Colis: </label> <span t-esc="art_qtec"/>-->
+<!--                    </p>-->
+<!--                </div>-->
+<!--            </t>-->
+<!--            <t t-if="art_qtep">-->
+<!--                <div>-->
+<!--                    <p>-->
+<!--                        <label for="art_qtep" class="control-label">Qty by Palette: </label> <span t-esc="art_qtep"/>-->
+<!--                    </p>-->
+<!--                </div>-->
+<!--            </t>-->
+<!--            <t>-->
+<!--                <div>-->
+<!--                    <p>-->
+<!--                        <label for="weight" class="control-label">Weight: </label> <span t-esc="weight"/> <span t-esc="weight_uom_name"/>-->
+<!--                    </p>-->
+<!--                </div>-->
+<!--            </t>-->
+<!--            <t t-if="native_country_id">-->
+<!--                <div>-->
+<!--                    <p>-->
+<!--                        <label for="native_country_id" class="control-label">Native country: </label> <span t-esc="native_country_id"/>-->
+<!--                    </p>-->
+<!--                </div>-->
+<!--            </t>-->
+<!--            <t t-if="customs_code">-->
+<!--                <div>-->
+<!--                    <p>-->
+<!--                        <label for="customs_code" class="control-label">Customs code: </label> <span t-esc="customs_code"/>-->
+<!--                    </p>-->
+<!--                </div>-->
+<!--            </t>-->
+<!--        </t>-->
+<!--    </t>-->
+<!--</templates>-->

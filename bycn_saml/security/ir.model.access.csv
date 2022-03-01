@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bycn_saml_provider_system,bycn_saml.provider_system,bycn_saml.model_bycn_saml_provider,base.group_system,1,1,1,1
+access_bycn_saml_token_none,bycn_saml.token_none,bycn_saml.model_bycn_saml_token,,0,0,0,0
+access_bycn_saml_provider_erp_manager,bycn_saml.provider_erp_manager,bycn_saml.model_bycn_saml_provider,base.group_erp_manager,1,0,0,0

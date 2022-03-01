@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!-- Tree view -->
+    <record model="ir.ui.view" id="view_provider_tree">
+        <field name="name">bycn_saml.provider.tree</field>
+        <field name="model">bycn_saml.provider</field>
+        <field name="arch" type="xml">
+            <tree string="arch">
+                <field name="name" />
+                <field name="button_css_class" />
+                <field name="link_css_class" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record model="ir.ui.view" id="view_provider_form">
+        <field name="name">bycn_saml.provider.form</field>
+        <field name="model">bycn_saml.provider</field>
+        <field name="arch" type="xml">
+            <form string="SAML Providers">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-check">
+                            <field name="active" widget="boolean_button" options='{"terminology": "active"}' />
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="button_css_class" />
+                        </group>
+                        <group>
+                            <field name="matching_attribute" />
+                            <field name="link_css_class" />
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="idp_metadata" />
+                        </group>
+                        <group>
+                            <field name="sp_metadata" />
+                            <field name="sp_pkey" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action view -->
+    <record model="ir.actions.act_window" id="action_provider">
+        <field name="name">SAML Providers</field>
+        <field name="res_model">bycn_saml.provider</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

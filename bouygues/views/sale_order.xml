@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="bouygues_sale_order_form_view" model="ir.ui.view">
+            <field name="name">bouygues.sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="sale_date" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="decoration-warning">is_kit==True</attribute>
+                    <attribute name="decoration-success">is_dropship==True</attribute>
+                    <attribute name="decoration-it">is_service==True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="domain">['&amp;', '|', ('company_id', '=',False), ('company_id', '=',company_id), ('is_customer', '=', True)]</attribute>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="so_state" widget="statusbar" statusbar_visible="draft,sent,progress,total_sale,partial_sale,partial_ship"/>
+                </xpath>
+                <xpath expr="//field[@name='team_id']" position="after">
+                    <field name="pablo_import_user_id"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="assigned_user_id"/>
+                    <field name="analytic_imputation"/>
+                    <field name="is_distrimo_company" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='client_order_ref']" position="after">
+                    <field name="picking_contact_id"/>
+                    <field name="has_kit" invisible="1"/>
+                    <field name="contact_phone" widget="phone" attrs="{'invisible': [('contact_phone', '=', False)]}"/>
+                    <field name="contact_mobile" widget="phone" attrs="{'invisible': [('contact_mobile', '=', False)]}"/>
+                    <field name="pablo_order_creator_id"/>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//field[@name='warehouse_id']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </xpath>
+                <xpath expr="//group[@name='sale_shipping']//div" position="replace">
+                </xpath>
+                <xpath expr="//group[@name='sale_shipping']//field[@name='effective_date']" position="replace"/>
+                <xpath expr="//group[@name='sale_shipping']//label" position="replace"/>
+                <xpath expr="//group[@name='sale_shipping']//field[@name='warehouse_id']" position="before">
+                    <field name="commitment_date"/>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='price_unit']" position="before">
+                    <field name="can_edit_price" invisible="1"/>
+                </xpath>
+                <xpath expr="///page[@name='order_lines']//tree//field[@name='price_unit']" position="after">
+                    <button name="edit_price_unit" type="object" icon="fa-euro" title="Edit Price Unit" aria-label="Edit Price Unit" attrs="{'invisible': ['|', ('state', 'not in', ['done']), ('can_edit_price', '=', False)]}"/>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='product_template_id']" position="before">
+                    <field name="rental_unit" invisible="1"/>
+                    <field name="rental_price" invisible="1"/>
+                    <field name="duration" invisible="1"/>
+                    <field name="line_sequence" optional="show"/>
+                    <field name="analytic_imputation" optional="show"/>
+                    <field name="is_kit" invisible="1"/>
+                    <field name="is_mto" invisible="1"/>
+                    <field name="is_service" invisible="1"/>
+                    <field name="virtual_available_at_date" invisible="1"/>
+                    <field name="is_dropship" invisible="1"/>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='product_uom_qty']" position="before">
+                    <field name="can_edit_quantity" invisible="1"/>
+                    <field name="virtual_available_at_date" optional="show"/>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('can_edit_quantity', '=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree//field[@name='qty_delivered']" position="after">
+                    <button name="add_delivered" type="object" icon="fa-truck" title="Add delivered qty" aria-label="Add delivered qty" attrs="{'invisible': ['|', ('state', 'not in', ('done', 'sale')), ('product_type', 'in', ('consu', 'product'))]}"/>
+                </xpath>
+<!--                <xpath expr="//button[@name='action_unlock']" position="attributes">-->
+<!--                    <attribute name="groups">bouygues.bouygues_manager_sales_group,base.group_system</attribute>-->
+<!--                </xpath>-->
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='tax_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='customer_signature']" position="after">
+                    <page name="so_note" string="Note">
+                        <group>
+                            <field name="so_note"/>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="partner_ref"/>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='price_unit']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('can_edit_price', '=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+                    <attribute name="domain">['&amp;', '|', ('company_id', '=',False), ('company_id', '=',company_id), ('id', 'in', partner_parent_child_ids)]</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                    <field name="shipping_name"/>
+                    <field name="partner_parent_child_ids" invisible="1"/>
+                    <field name="shipping_street"/>
+                    <field name="shipping_zip"/>
+                    <field name="shipping_city"/>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='product_template_id']" position="attributes">
+                    <attribute name="optional">show</attribute>
+                </xpath>
+
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="optional">show</attribute>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='warehouse_id']" position="attributes">
+                    <attribute name="optional">show</attribute>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='price_unit']" position="attributes">
+                    <attribute name="optional">show</attribute>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='price_subtotal']" position="attributes">
+                    <attribute name="optional">show</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_view_invoice']" position="before">
+                    <button type="object"
+                        name="action_view_purchase_orders"
+                        class="oe_stat_button"
+                        icon="fa-shopping-cart"
+                        attrs="{'invisible': [('purchase_orders_count', '=', 0)]}">
+                       <field name="purchase_orders_count" widget="statinfo" string="Purchase Orders"/>
+                    </button>
+                </xpath>
+                <xpath expr="//field[@name='report_grids']" position="attributes">
+                    <attribute name="groups"></attribute>
+                </xpath>
+                <xpath expr="//field[@name='report_grids']" position="after">
+                    <field name="type" options="{'no_create_edit': True}" required="1"/>
+                </xpath>
+                <xpath expr="//button[@name='payment_action_void']" position="before">
+                    <button name="action_assign_to_me" string="Assign to Me" type="object" class="oe_highlight" attrs="{'invisible' : [('assigned_user_id', '!=', False)]}"/>
+                </xpath>
+
+                <xpath expr="//button[@name='action_cancel']" position="after">
+                    <button name="select_products" string="Select Products" type="object" attrs="{'invisible' : [('state', '=', 'done')]}" class="oe_highlight"/>
+                </xpath>
+
+                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="attributes">
+                    <attribute name="groups">bouygues.bouygues_manager_sales_group,sales_team.group_sale_manager</attribute>
+                </xpath>
+                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][2]" position="attributes">
+                    <attribute name="groups">bouygues.bouygues_manager_sales_group,sales_team.group_sale_manager</attribute>
+                </xpath>
+            </field>
+        </record>
+            <record id="view_sales_order_auto_done_setting_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_auto_done_setting"/>
+            <field name="groups_id" eval="[(4, ref('sale.group_auto_done_setting'))]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_unlock']" position="attributes">
+                    <attribute name="groups">bouygues.bouygues_manager_sales_group,base.group_system</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_sales_order_auto_done_setting_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_auto_done_setting"/>
+            <field name="groups_id" eval="[(4, ref('sale.group_auto_done_setting'))]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_unlock']" position="attributes">
+                    <attribute name="groups">bouygues.bouygues_manager_sales_group,base.group_system</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_sale_order_tree_view" model="ir.ui.view">
+            <field name="name">bouygues.sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="so_state" string="Status"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_sale_order_tree_onboarding_view" model="ir.ui.view">
+            <field name="name">bouygues.sale.order.tree.onboarding</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="so_state" string="Status"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_sale_order_search_view" model="ir.ui.view">
+            <field name="name">bouygues.sale.order.search</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='sales']" position="after">
+                    <filter name="sale_team" string="My sale team" domain="[('my_sales_team', '=', True)]"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+            <field name="context">{'search_default_sale_team': 1}</field>
+        </record>
+        <record id="bouygues_sale_order_search_2_view" model="ir.ui.view">
+            <field name="name">bouygues.sale.order.search.2</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.sale_order_view_search_inherit_sale"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='upselling']" position="after">
+                    <filter name="sale_team" string="My sale team" domain="[('my_sales_team', '=', True)]"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="sale.action_orders" model="ir.actions.act_window">
+            <field name="context">{'search_default_sale_team': 1}</field>
+        </record>
+        <record model="ir.actions.server" id="action_sales_count_extraction_wizard">
+            <field name="name">Extraction : Sales Count</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Sales Count Extraction',
+    'res_model': 'sales.count.extraction',
+    'view_id': env.ref("bouygues.bouygues_sales_count_extraction_view_form").id,
+    'target': 'new',
+    'view_mode': 'form',
+}
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="action_client_sales_extraction">
+            <field name="name">Extraction : Client Sales</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code">model.extract_client_sales()</field>
+        </record>
+
+        <record model="ir.actions.server" id="action_extract_pablo_delivery">
+            <field name="name">Extraction : Pablo delivery</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="sale.model_sale_order" />
+            <field name="state">code</field>
+            <field name="code">records.extract_pablo_delivery()</field>
+        </record>
+
+        <!-- Sales/Orders/Quotations -->
+        <record id="sale.menu_sale_quotations" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('sales_team.group_sale_salesman'),
+                ref('bouygues.bouygues_supplier_sales_group'),
+                ref('bouygues.bouygues_logistic_sales_group'),
+                ref('bouygues.bouygues_trade_sales_group'),
+                ref('bouygues.bouygues_manager_sales_group'),
+            ])]"/>
+        </record>
+        <!-- Sales/Orders/Orders -->
+        <record id="sale.menu_sale_order" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('sales_team.group_sale_salesman'),
+                ref('bouygues.bouygues_supplier_sales_group'),
+                ref('bouygues.bouygues_logistic_sales_group'),
+                ref('bouygues.bouygues_trade_sales_group'),
+                ref('bouygues.bouygues_manager_sales_group'),
+            ])]"/>
+        </record>
+        <!-- Sales/Orders/Sales Teams -->
+        <record id="sale.report_sales_team" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('sales_team.group_sale_manager'),
+                ref('bouygues.bouygues_logistic_sales_group'),
+                ref('bouygues.bouygues_trade_sales_group'),
+                ref('bouygues.bouygues_manager_sales_group'),
+            ])]"/>
+        </record>
+        <!-- Sales/Orders/Customers -->
+        <record id="sale.res_partner_menu" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('sales_team.group_sale_salesman'),
+                ref('bouygues.bouygues_supplier_sales_group'),
+                ref('bouygues.bouygues_logistic_sales_group'),
+                ref('bouygues.bouygues_trade_sales_group'),
+                ref('bouygues.bouygues_manager_sales_group'),
+            ])]"/>
+        </record>
+        <!-- Sales/To Invoice -->
+        <record id="sale.menu_sale_invoicing" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('sales_team.group_sale_salesman'),
+                ref('bouygues.bouygues_supplier_sales_group'),
+                ref('bouygues.bouygues_logistic_sales_group'),
+                ref('bouygues.bouygues_trade_sales_group'),
+                ref('bouygues.bouygues_manager_sales_group'),
+            ])]"/>
+        </record>
+        <!-- Sales/Products -->
+        <record id="sale.product_menu_catalog" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('sales_team.group_sale_salesman'),
+                ref('bouygues.bouygues_supplier_sales_group'),
+                ref('bouygues.bouygues_logistic_sales_group'),
+                ref('bouygues.bouygues_trade_sales_group'),
+                ref('bouygues.bouygues_manager_sales_group'),
+            ])]"/>
+        </record>
+        <!-- Sales/Reporting -->
+        <record id="sale.menu_sale_report" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('sales_team.group_sale_manager'),
+                ref('bouygues.bouygues_trade_sales_group'),
+                ref('bouygues.bouygues_logistic_sales_group'),
+                ref('bouygues.bouygues_trade_sales_group'),
+                ref('bouygues.bouygues_manager_sales_group'),
+            ])]"/>
+        </record>
+        <!-- Sales/Configuration -->
+        <record id="sale.menu_sale_config" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('sales_team.group_sale_manager'),
+            ])]"/>
+        </record>
+    </data>
+</odoo>

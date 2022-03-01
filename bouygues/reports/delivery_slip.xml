@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="stock.action_report_delivery" model="ir.actions.report">
+            <field name="paperformat_id" ref="bouygues.paperformat_A4_delivery"/>
+        </record>
+        <template id="bouygues_delivery_slip_inherit" inherit_id="stock.report_delivery_document">
+            <xpath expr="//t[@name='partner_header']" position="after">
+                <div class="row">
+                    <div class="col-5 offset-7">
+                            <t t-if="o.picking_contact_id">
+                                <p class="my-0 py-0"><strong>Contact : </strong><span t-esc="o.picking_contact_id.name"/></p>
+                            </t>
+                            <t t-if="o.contact_phone">
+                                <p class="my-0 py-0"><strong>Phone : </strong><span t-esc="o.contact_phone"/></p>
+                            </t>
+                            <t t-if="o.contact_mobile">
+                                <p class="my-0 py-0"><strong>Mobile : </strong><span t-esc="o.contact_mobile"/></p>
+                            </t>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//table[@name='stock_move_line_table']/thead/tr/th[3]" position="after">
+                <th class="text-center"><strong>To Deliver</strong></th>
+            </xpath>
+            <xpath expr="//table[@name='stock_move_line_table']/tbody/tr/td[4]" position="after">
+                <td class="text-center">
+                    <t t-if="move_line.move_id.qty_to_deliver != -1">
+                        <span t-field="move_line.move_id.qty_to_deliver"/>
+                        <span t-field="move_line.product_uom_id"/>
+                    </t>
+                </td>
+            </xpath>
+            <xpath expr="//div[@name='div_sched_date']" position="after">
+                <div t-if="o.create_uid.name" class="col-auto">
+                    <strong>Created by:</strong>
+                    <p t-field="o.create_uid.name"/>
+                </div>
+            </xpath>
+        </template>
+        <template id="bouygues_external_layout_boxed" inherit_id="web.external_layout_boxed">
+            <xpath expr="/t/div[3]" position="attributes">
+                <t t-if="o._name == 'stock.picking'">
+                    <attribute name="class">footer</attribute>
+                </t>
+            </xpath>
+            <xpath expr="/t/div[3]/div" position="before">
+                <t t-if="o._name == 'stock.picking'">
+                    <div style="text-align: left; margin: 0; padding: 0;">
+                        <div class="row">
+                            <div class="col-5 offset-7">
+                                <span style="text-center">
+                                    Signature:
+                                </span>
+                                <div style="width: 100%; height: 120px; border: 2px black solid;margin: 5px auto"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="border: 1px solid black;"/>
+                </t>
+            </xpath>
+            <xpath expr="/t/div/div" position="after">
+                <t t-if="o._name == 'stock.picking'">
+                    <div class="row">
+                        <div class="col-4">
+                            <h2>Bon de livraison</h2>
+                        </div>
+                    </div>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>

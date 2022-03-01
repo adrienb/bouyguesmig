@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="bouygues_product_product_kanban_view" model="ir.ui.view">
+            <field name="name">bouygues.product.product.kanban</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_kanban_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="attributes">
+                    <attribute name="create">0</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_product_product_form_view" model="ir.ui.view">
+            <field name="name">bouygues.product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="stock.product_form_view_procurement_button"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_open_product_lot']" position="after">
+                    <field name="bom_count_visible" invisible="1"/>
+                    <button class="oe_stat_button" name="action_view_bom" type="object"
+                        attrs="{'invisible':['|', ('type', 'not in', ['product', 'consu']), ('bom_count_visible', '=', False)]}" icon="fa-flask">
+                        <field string="Bill of Materials" name="bom_count" widget="statinfo" />
+                    </button>
+                </xpath>
+                <xpath expr="//field[@name='uom_po_id']" position="after">
+                    <field name="uom_uom_id" options="{'no_create_edit': True}"/>
+                    <field name="eco_tax_id"/>
+                    <field name="storage_cost_id"/>
+                </xpath>
+                <xpath expr="//field[@name='purchase_requisition']" position="after">
+                    <field name="main_supplier_id" domain="[('is_supplier','=',True)]"/>
+                </xpath>
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="eco_product" invisible="1"/>
+                    <field name="eco_product_id" domain="[('eco_product','=',True)]" invisible="1"/>
+                    <field name="code_v12"/>
+                    <field name="finish_stock"/>
+                    <field name="end_life"/>
+                    <field name="end_life_message" attrs="{'invisible': [('end_life', '=', False)]}"/>
+                    <field name="substitution_product_product_id"/>
+                </xpath>
+                <xpath expr="//button[@name='action_open_product_lot']" position="before">
+                    <button type="object" string="Product moves" name="action_view_ready_stock_move" class="oe_stat_button" icon="fa-exchange">
+                    </button>
+                </xpath>
+                <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='purchase_line_warn']" position="replace">
+                    <field name="product_purchase_line_warn" nolabel="1"/>
+                </xpath>
+                <xpath expr="//field[@name='purchase_line_warn_msg']" position="replace">
+                        <field name="product_purchase_line_warn_msg" colspan="3" nolabel="1"
+                        attrs="{'required':[('product_purchase_line_warn','!=','no-message')],'invisible':[('product_purchase_line_warn','=','no-message')]}"/>
+                </xpath>
+                <xpath expr="//h1" position="after">
+                    <label for="product_tmpl_id"/>
+                    <xpath expr="//field[@name='product_tmpl_id']" position="move"/>
+                </xpath>
+                <xpath expr="//button[@name='action_open_quants']" position="before">
+                    <button type="object"
+                       name="action_view_free_qty"
+                       class="oe_stat_button"
+                       icon="fa-shopping-cart">
+                       <field name="free_qty" widget="statinfo" string="Available"/>
+                    </button>
+                </xpath>
+                <xpath expr="//page[@name='general_information']" position="after">
+                    <page name="speed_wms_information" string="Speed WMS Information">
+                        <group>
+                            <group name="wms_1">
+<!--                                <field name="lot_id"/>-->
+<!--                                <field name="manufacturing_date"/>-->
+<!--                                <field name="date_dluo"/>-->
+<!--                                <field name="quality_code"/>-->
+                                <field name="art_eanu"/>
+                                <field name="art_eanc"/>
+                                <field name="art_eanp"/>
+                                <field name="art_lonu"/>
+                                <field name="art_laru"/>
+                                <field name="art_hauu"/>
+                                <field name="art_clas"/>
+                            </group>
+                            <group name="wms_2">
+<!--                                <field name="art_nse"/>-->
+<!--                                <field name="art_nss"/>-->
+<!--                                <field name="art_coli"/>-->
+<!--                                <field name="art_pal"/>-->
+                                <field name="art_qtec"/>
+                                <field name="art_qtep"/>
+                                <field name="art_stat"/>
+                                <field name="art_code"/>
+                                <field name="class_code"/>
+                                <field name="packing_code"/>
+                                <field name="native_country_id"/>
+                                <field name="customs_code"/>
+                                <field name="ICPE_code"/>
+<!--                                <field name="art_prep1"/>-->
+<!--                                <field name="art_prep2"/>-->
+<!--                                <field name="art_prep3"/>-->
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//button[@name='action_update_quantity_on_hand']" position="after">
+                    <button name="update_name" string="Update Name" type="object"/>
+                </xpath>
+                <xpath expr="//button[@name='action_view_stock_move_lines']" position="attributes">
+                    <attribute name="groups">stock.group_stock_user,bouygues.bouygues_base_group</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_product_product_tree_view" model="ir.ui.view">
+            <field name="name">bouygues.product.product.tree</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='uom_id']" position="after">
+                    <field name="sales_count" optional="show"/>
+                    <field name="purchased_product_qty" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_product_form_view_common" model="ir.ui.view">
+            <field name="name">bouygues.product.form.view.common</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="duplicate">0</attribute>
+                    <attribute name="create">0</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="bouygues_product_form_view_sale_order_button" model="ir.ui.view">
+            <field name="name">bouygues.product.form.view.sale.order.button</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="sale.product_form_view_sale_order_button"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_sales']" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_salesman,bouygues.bouygues_base_group</attribute>
+                </xpath>
+                <xpath expr="//field[@name='sale_line_warn']" position="replace">
+                    <field name="product_sale_line_warn" nolabel="1"/>
+                </xpath>
+                <xpath expr="//field[@name='sale_line_warn_msg']" position="replace">
+                        <field name="product_sale_line_warn_msg" colspan="3" nolabel="1"
+                        attrs="{'required':[('product_sale_line_warn','!=','no-message')],'invisible':[('product_sale_line_warn','=','no-message')]}"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="stock.product_form_view_procurement_button" model="ir.ui.view">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('stock.group_stock_user'),
+                ref('bouygues.bouygues_base_group'),
+            ])]"/>
+        </record>
+        <record id="sale.product_form_view_sale_order_button" model="ir.ui.view">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('sales_team.group_sale_salesman'),
+                ref('bouygues.bouygues_base_group'),
+            ])]"/>
+        </record>
+        <record id="mrp.product_product_form_view_bom_button" model="ir.ui.view">
+            <field name="groups_id" eval="[(6, 0, [
+                ref('mrp.group_mrp_user'),
+                ref('bouygues.bouygues_base_group'),
+            ])]"/>
+        </record>
+        <record id="purchase.product_normal_form_view_inherit_purchase" model="ir.ui.view">
+            <field name="groups_id" eval="[
+                (4, ref('bouygues.bouygues_base_group')),
+            ]"/>
+        </record>
+        <record model="ir.actions.server" id="action_export_product_wms">
+            <field name="name">Export Products (WMS)</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="binding_model_id" ref="product.model_product_product" />
+            <field name="state">code</field>
+            <field name="code">records.export_product_wms()</field>
+        </record>
+        <record model="ir.actions.server" id="action_export_product_stock_wms">
+            <field name="name">Export Products Stock (WMS)</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="binding_model_id" ref="product.model_product_product" />
+            <field name="state">code</field>
+            <field name="code">records.export_product_stock_wms()</field>
+        </record>
+        <record model="ir.actions.server" id="action_inventory_at_date_extraction_wizard">
+            <field name="name">Extraction : Inventory at date</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="binding_model_id" ref="product.model_product_product"/>
+            <field name="state">code</field>
+            <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Inventory Extraction Date',
+    'res_model': 'inventory.extraction.date',
+    'view_id': env.ref("bouygues.bouygues_inventory_extraction_date_view_form").id,
+    'target': 'new',
+    'view_mode': 'form',
+}
+            </field>
+        </record>
+        <record model="ir.actions.server" id="action_product_margin_wizard">
+            <field name="name">Extraction : Marge</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="binding_model_id" ref="product.model_product_product"/>
+            <field name="state">code</field>
+            <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Product Margin',
+    'res_model': 'product.margin',
+    'view_id': env.ref("bouygues.bouygues_product_margin_view_form").id,
+    'target': 'new',
+    'view_mode': 'form',
+}
+            </field>
+        </record>
+        <record model="ir.actions.server" id="action_temp_name">
+            <field name="name">Extraction : Analyse PR</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="binding_model_id" ref="product.model_product_product"/>
+            <field name="state">code</field>
+            <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'PR Analysis',
+    'res_model': 'pr.analysis.extraction',
+    'view_id': env.ref("bouygues.bouygues_pr_analysis_extraction_view_form").id,
+    'target': 'new',
+    'view_mode': 'form',
+}</field>
+        </record>
+        <record model="ir.actions.server" id="action_product_rotation_rate">
+            <field name="name">Extraction : Product Rotation Rate</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="binding_model_id" ref="product.model_product_product"/>
+            <field name="state">code</field>
+            <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Product Rotation Rate',
+    'res_model': 'product.rotation.rate',
+    'view_id': env.ref("bouygues.bouygues_product_rotation_rate_extraction_view_form").id,
+    'target': 'new',
+    'view_mode': 'form',
+}</field>
+        </record>
+    </data>
+</odoo>

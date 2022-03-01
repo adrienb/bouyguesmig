@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="AddToBoardMenu">
+        <t t-jquery="button.o_add_to_board_confirm_button" t-operation="after">
+            <button type="button" class="btn btn-primary o_add_to_board_sale_confirm_button">Add to Sale</button>
+            <button type="button" class="btn btn-primary o_add_to_board_purchase_confirm_button">Add to Purchase</button>
+            <button type="button" class="btn btn-primary o_add_to_board_stock_confirm_button">Add to Inventory</button>
+        </t>
+    </t>
+</templates>
+

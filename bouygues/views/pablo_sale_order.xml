@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="pablo_sale_order_search_view" model="ir.ui.view">
+            <field name="name">pablo.sale.order.search</field>
+            <field name="model">pablo.sale.order</field>
+            <field name="arch" type="xml">
+                <search string="Pablo Sale Order">
+<!--                    <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>-->
+                    <field name="name" string="Name" filter_domain="[('name','ilike',self)]"/>
+                    <field name="customer_ref"/>
+<!--                    <group expand="0" string="Group By">-->
+<!--                        <filter string="Blog" name="group_by_blog" domain="[]" context="{'group_by': 'blog_id'}"/>-->
+<!--                        <filter string="Author" name="group_by_author" domain="[]" context="{'group_by': 'create_uid'}"/>-->
+<!--                        <filter string="Last Contributor" name="last_contributor" domain="[]" context="{'group_by': 'write_uid'}"/>-->
+<!--                    </group>-->
+                </search>
+            </field>
+        </record>
+
+        <record id="pablo_sale_order_tree_view" model="ir.ui.view">
+            <field name="name">pablo.sale.order.tree</field>
+            <field name="model">pablo.sale.order</field>
+            <field name="arch" type="xml">
+                <tree delete="false" decoration-info="pablo_sale_order_state == 'draft'" decoration-muted="pablo_sale_order_state == 'cancel'">
+                    <field name="name"/>
+                    <field name="import_customer"/>
+                    <field name="import_delivery_address_city_zip"/>
+                    <field name="import_picking_contact"/>
+                    <field name="customer_ref"/>
+                    <field name="pablo_sale_order_state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="pablo_sale_order_form_view" model="ir.ui.view">
+            <field name="name">pablo.sale.order.form</field>
+            <field name="model">pablo.sale.order</field>
+            <field name="arch" type="xml">
+                <form delete="false">
+                    <header>
+                        <button name="import_sale_order" type="object" class="oe_highlight" string="Import Sale Order" attrs="{'invisible': [('pablo_sale_order_state', '!=', 'draft')]}"/>
+                        <button name="action_cancel" string="Cancel" type="object" attrs="{'invisible': [('pablo_sale_order_state', '!=', 'draft')]}"/>
+                        <field name="pablo_sale_order_state" widget="statusbar" statusbar_visible="draft,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="import_customer"/>
+                                <field name="import_delivery_address"/>
+                                <field name="import_delivery_address_street"/>
+                                <field name="import_delivery_address_city_zip"/>
+                                <field name="import_picking_contact"/>
+<!--                                <field name="import_picking_contact_2"/>-->
+                                <field name="import_pablo_order_creator_id"/>
+                                <field name="analytic_imputation"/>
+                                <field name="customer_ref"/>
+<!--                                <field name="multiple_ci"/>-->
+                                <field name="pablo_pdf" widget="url"/>
+                                <field name="pablo_import_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="customer_id" domain="[('is_customer', '=', True), ('is_company', '=', True)]"/>
+                                <field name="delivery_address_id" domain="[('parent_id', '=', customer_id)]"/>
+                                <field name="delivery_name"/>
+                                <field name="delivery_street"/>
+                                <field name="delivery_zip"/>
+                                <field name="delivery_city"/>
+                                <field name="picking_contact_id"/>
+                                <field name="picking_contact_mobile" widget="phone"/>
+                                <field name="pablo_order_creator_id"/>
+                                <field name="sale_order_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="pablo_note"/>
+                        </group>
+                        <notebook>
+                            <page name="order_line" string="Order Lines">
+                                <group>
+                                    <field name="pablo_sale_order_line_ids" nolabel="1">
+                                        <tree editable="bottom" decoration-warning="end_of_life == True" decoration-danger="not_sellable == True">
+                                            <field name="end_of_life" invisible="1"/>
+                                            <field name="not_sellable" invisible="1"/>
+                                            <field name="analytic_imputation"/>
+                                            <field name="pablo_ref"/>
+                                            <field name="product_id"/>
+                                            <field name="product_uom_qty"/>
+                                            <field name="imported_price"/>
+                                            <field name="price" readonly="1"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_pablo_sale_order" model="ir.actions.act_window">
+            <field name="name">Pablo Sale Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pablo.sale.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="bouygues.pablo_sale_order_tree_view"/>
+            <field name="context">{'create': False}</field>
+        </record>
+
+        <menuitem action="action_pablo_sale_order" id="menu_action_pablo_sale_order" parent="bouygues.menu_action_pablo_import"/>
+</odoo>

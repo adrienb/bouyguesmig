@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- wizard view -->
+        <record id="bouygues_pr_analysis_extraction_view_form" model="ir.ui.view">
+            <field name="name">PR Analysis</field>
+            <field name="model">pr.analysis.extraction</field>
+            <field name="arch" type="xml">
+                <form string="PR Analysis">
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                    <footer>
+                        <button string="Apply" name="action_apply" type="object" class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

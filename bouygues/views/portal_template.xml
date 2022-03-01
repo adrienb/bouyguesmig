@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_invoices_order_number" inherit_id='account.portal_my_invoices' priority="4">
+        <xpath expr="//tbody/t/tr/td[1]" position="replace">
+            <td>
+                <a t-att-href="invoice.get_portal_url()" t-att-title="invoice.name">
+                    <t t-esc="invoice.line_ids.sale_line_ids.order_id[:1].client_order_ref"/>
+                </a>
+            </td>
+        </xpath>
+        <xpath expr="//thead/tr/th[5]" position="after">
+            <th> SO state </th>
+        </xpath>
+        <xpath expr="//tbody/t/tr/td[5]" position="after">
+            <td>
+                <t t-esc="invoice.line_ids.sale_line_ids.order_id[:1].so_state"/>
+            </td>
+        </xpath>
+    </template>
+</odoo>
