@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
-# import lasso
+import lasso
 
 from odoo import api, fields, models
 
@@ -92,16 +92,15 @@ class Provider(models.Model):
         '''
         # TODO: we should cache those results somewhere because it is
         # really costly to always recreate a login variable from buffers
-        # server = lasso.Server.newFromBuffers(
-        #     self.sp_metadata,
-        #     self.sp_pkey
-        # )
-        # server.addProviderFromBuffer(
-        #     lasso.PROVIDER_ROLE_IDP,
-        #     self.idp_metadata
-        # )
-        # return lasso.Login(server)
-        return True
+        server = lasso.Server.newFromBuffers(
+            self.sp_metadata,
+            self.sp_pkey
+        )
+        server.addProviderFromBuffer(
+            lasso.PROVIDER_ROLE_IDP,
+            self.idp_metadata
+        )
+        return lasso.Login(server)
 
     def _get_auth_request(self, state):
         '''build an authentication request and give it back to our client
